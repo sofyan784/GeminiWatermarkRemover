@@ -140,10 +140,15 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Fetch tags
+      run: git fetch --tags --force
+
     - name: Get tag message
       id: tag
       run: |
-        TAG_MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/tags/})
+        TAG_NAME=${GITHUB_REF#refs/tags/}
+        echo "Tag name: $TAG_NAME"
+        TAG_MESSAGE=$(git for-each-ref --format='%(contents)' refs/tags/$TAG_NAME)
         echo "message<<EOF" >> $GITHUB_OUTPUT
         echo "$TAG_MESSAGE" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
