@@ -14,8 +14,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # =============================================================================
 set(APP_PRODUCT_NAME "Gemini Watermark Tool")
 set(APP_DESCRIPTION "Add/Remove Gemini-style visible watermarks")
-set(APP_COMPANY "Allen Wu")
-set(APP_COPYRIGHT "Copyright (C) 2024 Allen Wu. MIT License.")
+set(APP_COMPANY "Kwyshell")
+set(APP_COPYRIGHT "Copyright (C) 2025 Allen Kuo. MIT License.")
 
 # =============================================================================
 # Windows Resource File (Icon + Version Info)
