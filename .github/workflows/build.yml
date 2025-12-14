@@ -141,6 +141,15 @@ jobs:
 
     - name: List downloaded files
       run: find . -type f
+      
+    - name: Get tag message
+      id: tag
+      run: |
+        TAG_MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/tags/})
+        echo "message<<EOF" >> $GITHUB_OUTPUT
+        echo "$TAG_MESSAGE" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
     - name: Prepare release files
       run: |
         # Windows
@@ -163,6 +172,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
+        body: ${{ steps.tag.outputs.message }}
         files: |
           GeminiWatermarkTool-Windows-x64.zip
           GeminiWatermarkTool-Linux-x64.zip
