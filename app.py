@@ -8,7 +8,8 @@ import time
 from PIL import Image
 
 # Configuration
-TOOL_PATH = "GeminiWatermarkTool.exe"
+# TOOL_PATH = "GeminiWatermarkTool.exe" # No longer needed for Vercel
+import watermark_engine
 TEMP_DIR = "temp_uploads"
 
 # Ensure temp directory exists (safely)
@@ -629,15 +630,16 @@ if uploaded_files:
                 with open(input_path, "wb") as f:
                     f.write(uploaded_file.getbuffer())
                 
-                # Run Tool
-                command = [TOOL_PATH, "-i", input_path, "-o", output_path]
+                # Run Tool (Native Python Engine)
                 try:
-                    subprocess.run(command, capture_output=True, check=True)
+                    success = watermark_engine.process_image(input_path, output_path)
                     
-                    if os.path.exists(output_path):
+                    if success and os.path.exists(output_path):
                         # Add to ZIP
                         zip_file.write(output_path, output_filename)
                         processed_images.append((input_path, output_path, uploaded_file.name))
+                    else:
+                        st.error(texts["error_process"].format(uploaded_file.name, "Processing failed"))
                 except Exception as e:
                     st.error(texts["error_process"].format(uploaded_file.name, e))
                 
